@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import IsolationForest
 import os
 
-# --- Step 1: Simulate 7 Days of Hourly Environmental Data ---
+# Simulating 7 Days of Hourly Environmental Data
 hours = pd.date_range("2025-01-01", periods=24*7, freq="H")
 
 data = {
@@ -17,17 +17,17 @@ data = {
 
 df = pd.DataFrame(data, index=hours)
 
-# Add artificial anomalies (optional, for testing)
-df.iloc[50, 0] += 15   # spike in temperature
-df.iloc[120, 1] -= 30  # drop in humidity
-df.iloc[140, 2] += 1000  # spike in light
+# Adding artificial anomalies (just for testing)
+df.iloc[50, 0] += 15   # spikes in temperature
+df.iloc[120, 1] -= 30  # drops in humidity
+df.iloc[140, 2] += 1000  # spikes in light
 
-# --- Step 2: Detect Anomalies with Isolation Forest ---
+#  Detecting Anomalies with Isolation Forest
 features = df[["Temperature (°C)", "Humidity (%)", "Light (lux)"]]
 model = IsolationForest(contamination=0.1, random_state=42)
 df["anomaly"] = model.fit_predict(features)
 
-# --- Step 3: Summary Statistics ---
+# Summary Statistics
 summary = {
     "Average Temperature (°C)": df["Temperature (°C)"].mean(),
     "Average Humidity (%)": df["Humidity (%)"].mean(),
@@ -38,7 +38,7 @@ summary_df = pd.DataFrame([summary])
 print("\n📊 Environmental Summary Report:")
 print(summary_df)
 
-# --- Step 4: Plot and Visualize Anomalies ---
+# Ploting and Visualizing Anomalies
 plt.figure(figsize=(10, 4))
 plt.plot(df.index, df["Temperature (°C)"], label="Temperature", color="orange")
 plt.scatter(
@@ -54,7 +54,7 @@ plt.ylabel("Temperature (°C)")
 plt.tight_layout()
 plt.show()
 
-# --- Step 5: Save Outputs ---
+#  Saving the Outputs 
 output_dir = "outputs"
 os.makedirs(output_dir, exist_ok=True)
 
